@@ -149,7 +149,18 @@ void lex() {
             case '+': add_token(TK_PLUS, NULL); break;
             case '-': if (input[pos+1] == '>') { add_token(TK_ARROW, NULL); pos++; col++; } else add_token(TK_MINUS, NULL); break;
             case '*': add_token(TK_STAR, NULL); break;
-            case '/': add_token(TK_SLASH, NULL); break;
+            case '/':
+                if (input[pos + 1] == '/') {
+                    do {
+                        pos++;
+                    } while (input[pos] != '\n' && input[pos] != 0);
+                    line++;
+                    col = 1;
+                    continue;
+                } else {
+                    add_token(TK_SLASH, NULL);
+                }
+                break;
             case '(': add_token(TK_LPAREN, NULL); break;
             case ')': add_token(TK_RPAREN, NULL); break;
             case '{': add_token(TK_LBRACE, NULL); break;
